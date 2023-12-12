@@ -67,7 +67,8 @@ def layout():
 
 def get_city_name(bfs_num):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path += '/data/cities/'
+    path = os.path.join(path, 'data')
+    path = os.path.join(path, 'cities')
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
@@ -122,7 +123,8 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
 
     # save matrices
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path += '/data/cities/'
+    path = os.path.join(path, 'data')
+    path = os.path.join(path, 'cities')
     np.save(path + city_name + '.npy', matrices)
     
     # save parameters
