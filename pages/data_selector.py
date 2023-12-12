@@ -3,11 +3,18 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 import numpy as np
 import json
-import base64
-import io
 import os
-import tempfile
 import dash
+import dash_uploader as du
+import uuid
+
+def get_upload_component(id):
+    return du.Upload(
+        id=id,
+        max_file_size=1800,  # 1800 Mb
+        filetypes=['csv'],
+        upload_id=uuid.uuid1(),  # Unique session id
+    )
 
 def layout():
     return html.Div([
@@ -15,24 +22,7 @@ def layout():
             html.H1("Data Selector for Matrix Optimization App"),
         ], style={'width': '100%', 'padding': '0px 20px 20px 20px', 'boxSizing': 'border-box', 'display': 'inline-block'}),
         
-        dcc.Upload(
-            id='upload-data',
-            children=html.Div([
-                'Drag and Drop a .csv or ',
-                html.A('Select a .csv File')
-            ]),
-            style={
-                'width': '100%',
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '1px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '10px'
-            },
-            multiple=False
-        ),
+        get_upload_component('upload-data'),
         
         dcc.Loading(
             id='loading-output',
@@ -75,39 +65,8 @@ def get_city_name(bfs_num):
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
-
-# Callback to update data file and dropdowns
-@dash.callback(
-    [Output('city-dropdown', 'options'),
-     Output('parameter-dropdown', 'options'),
-     Output('data-file-path', 'data')],
-    [Input('upload-data', 'contents')],
-    prevent_initial_call=True
-)
-def update_data_and_dropdowns(contents):
-    print('Successfully received callback')
-    content_type, content_string = contents.split(',')
-    print('Sucessfully split')
-    decoded = io.StringIO(base64.b64decode(content_string).decode('utf-8'))
-    df = pd.read_csv(decoded)
-    print('Successful decode')
-    # Save DataFrame to Parquet file
-    temp_dir = tempfile.mkdtemp()
-    file_path = os.path.join(temp_dir, 'data.parquet')
-    df.to_parquet(file_path, index=False)
-    print('Successful save')
     
-    # Update city dropdown options
-    cities = df['bfs_nummer'].unique()
-    city_options = [{'label': get_city_name(str(city)), 'value': str(city)} for city in cities]
-    print('Successful options')
-
-    # Update parameter dropdown options
-    available_params = df.columns.difference(['d', 'year', 'geom', 'bfs_nummer']).tolist()
-    parameter_options = [{'label': parameter, 'value': parameter} for parameter in available_params]
-
-    return city_options, parameter_options, file_path
-
+    
 # Callback to save selected parameters as .npy file
 @dash.callback(
     Output('save-button-output', 'children'),
@@ -118,7 +77,7 @@ def update_data_and_dropdowns(contents):
     prevent_initial_call=True
 )
 def save_parameters(n_clicks, city_value, selected_parameters, file_path):
-    df = pd.read_parquet(file_path)
+    df = pd.read_csv(file_path)
     city_data = df[df['bfs_nummer'] == int(city_value)]
     matrices = []
 
