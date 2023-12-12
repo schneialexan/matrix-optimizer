@@ -101,7 +101,6 @@ def layout():
      State('stadt-dropdown', 'value')]
 )
 def save_matrix(n_clicks, matrix_data, matrix_columns, stadt):
-    print('Save')
     if n_clicks is None:
         return dash.no_update
     df = pd.DataFrame(matrix_data)
@@ -152,8 +151,6 @@ def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indic
     path += '/data/cities/'
     matrices = np.load(f'{path}{stadt}.npy', allow_pickle=True)
     matrix_size = matrices[0].shape[1]
-
-    print(f'Called with {ctx.triggered}')
 
     if 'reset-button' == ctx_triggered:
         return (
