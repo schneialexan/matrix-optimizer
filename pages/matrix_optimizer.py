@@ -9,7 +9,6 @@ import pandas as pd
 import os
 
 def layout():
-    START_MATRIX_SIZE = 4
     return html.Div([
         html.Div([
             html.H1("Matrix Optimization App"),
@@ -58,7 +57,6 @@ def layout():
         html.Div([
             dcc.Dropdown(
                 id="locked-indices",
-                options=helpers.make_indices_from_matrixsize(START_MATRIX_SIZE),
                 multi=True,
                 placeholder="Select locked indices",
             ),
