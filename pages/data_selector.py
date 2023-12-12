@@ -69,6 +69,8 @@ def get_city_name(bfs_num):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
+    filename = '00_bfs_numbers.json'
+    path = os.path.join(path, filename)
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
