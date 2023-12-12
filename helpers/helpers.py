@@ -104,7 +104,8 @@ def get_best_learn_rate(matrix_to_optimize, matrices, start_lr=1e-10, end_lr=1e2
 def get_cities():
     cities = []
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path += '/data/cities/'
+    path = os.path.join(path, 'data')
+    path = os.path.join(path, 'cities')
     for file in os.listdir(path):
         if file.endswith(".npy"):
             cities.append(file.split('.')[0].capitalize())
@@ -112,7 +113,8 @@ def get_cities():
 
 def get_columns(city):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path += '/data/cities/'
+    path = os.path.join(path, 'data')
+    path = os.path.join(path, 'cities')
     file_name = f'{city}_parameters.json'
     with open(path + file_name) as f:
         data = json.load(f)
