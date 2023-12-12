@@ -6,6 +6,19 @@ from optimizers import scipy_minimizer, sgd_minimizer, cvxpy_minimizer
 from helpers import helpers
 import os
 import pandas as pd
+import os
+
+def get_download_path():
+    """Returns the default downloads path for linux or windows"""
+    if os.name == 'nt':
+        import winreg
+        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            location = winreg.QueryValueEx(key, downloads_guid)[0]
+        return location
+    else:
+        return os.path.join(os.path.expanduser('~'), 'downloads')
 
 
 def layout():
@@ -103,7 +116,7 @@ def save_matrix(n_clicks, matrix_data, matrix_columns, stadt):
         return dash.no_update
     df = pd.DataFrame(matrix_data)
     df.columns = [column['name'] for column in matrix_columns]
-    save_folder = 'src/data/saved_matrices'
+    save_folder = get_download_path()
 
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
@@ -150,7 +163,7 @@ def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indic
     ctx_triggered = ctx.triggered_id
 
     # get necessary data
-    matrices = np.load(f'src/data/cities/{stadt}.npy', allow_pickle=True)
+    matrices = np.load(f'matrix-optimizer/data/cities/{stadt}.npy', allow_pickle=True)
     matrix_size = matrices[0].shape[1]
 
     print(f'Called with {ctx.triggered}')
