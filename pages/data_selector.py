@@ -56,7 +56,6 @@ def layout():
 
 
 def get_city_name(bfs_num):
-    print(f'BFS_Nummer: {bfs_num}')
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
