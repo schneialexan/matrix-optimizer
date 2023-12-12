@@ -116,6 +116,6 @@ def get_columns(city):
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
     file_name = f'{city}_parameters.json'
-    with open(path + file_name) as f:
+    with open(os.path.join(path, file_name)) as f:
         data = json.load(f)
     return [{"name": col, "id": str(i+1)} for i, col in enumerate(data)]
