@@ -119,11 +119,12 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
     city_name = get_city_name(city_value).lower()
 
     # save matrices
-    save_path = 'matrix-optimizer/data/cities/'
-    np.save(save_path + city_name + '.npy', matrices)
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path += '/data/cities/'
+    np.save(path + city_name + '.npy', matrices)
     
     # save parameters
-    params_file_path = os.path.join(save_path, f'{city_name}_parameters.json')
+    params_file_path = os.path.join(path, f'{city_name}_parameters.json')
     with open(params_file_path, 'w') as json_file:
         json.dump(selected_parameters, json_file)
 
