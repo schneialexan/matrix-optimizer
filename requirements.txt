@@ -5,3 +5,4 @@ numpy==1.20.3
 pandas==1.4.4
 scipy==1.9.1
 waitress==2.1.2
+dash-uploader==0.6.0
