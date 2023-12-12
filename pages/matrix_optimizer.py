@@ -103,15 +103,12 @@ def save_matrix(n_clicks, matrix_data, matrix_columns, stadt):
         return dash.no_update
     df = pd.DataFrame(matrix_data)
     df.columns = [column['name'] for column in matrix_columns]
-    
     filename = f'{stadt}_matrix_{n_clicks}.csv'
-
     return f'Saved matrix as {filename}', dict(content=df.to_csv(index=False), filename=filename)
 
 
 def optimize_matrix(matrix, matrices, locked_indices, max_change, optimization_method):
     locked_indices = [] if locked_indices is None else [eval(index) for index in locked_indices]
-
     if optimization_method == 'Scipy Minimize':
         result, cost_list = scipy_minimizer.minimize_matrix(matrix, matrices, locked_indices, max_change)
     elif optimization_method == 'SGD':
@@ -121,7 +118,6 @@ def optimize_matrix(matrix, matrices, locked_indices, max_change, optimization_m
         result = cvxpy_minimizer.minimize_matrix(matrix, matrices, locked_indices, max_change)
     else:
         result = np.array(matrix)
-
     return helpers.make_dict_from_matrix(result)
 
 
@@ -143,7 +139,6 @@ def optimize_matrix(matrix, matrices, locked_indices, max_change, optimization_m
 )
 def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indices, matrix, optimization_method):
     ctx_triggered = ctx.triggered_id
-
     # get necessary data
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path += '/data/cities/'
@@ -156,7 +151,6 @@ def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indic
             helpers.get_columns(stadt),
             helpers.make_indices_from_matrixsize(matrix_size)
         )
-
     if 'optimize-button' == ctx_triggered:
         matrix = helpers.make_matrix_from_dict(matrix)
         optimized_matrix = optimize_matrix(matrix, matrices, locked_indices, max_change, optimization_method)
@@ -165,7 +159,6 @@ def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indic
             helpers.get_columns(stadt),
             helpers.make_indices_from_matrixsize(matrix_size)
         )
-    
     return (
         helpers.make_initial_matrix(matrix_size),
         helpers.get_columns(stadt),
