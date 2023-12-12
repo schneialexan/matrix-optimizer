@@ -90,8 +90,7 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
-    matrices_file_path = os.path.join(path, f'{city_name}_matrices.npy')
-    np.save(matrices_file_path, np.array(matrices))
+    np.save(os.path.join(path, f'{city_name}.npy'), np.array(matrices))
     
     # save parameters
     params_file_path = os.path.join(path, f'{city_name}_parameters.json')
