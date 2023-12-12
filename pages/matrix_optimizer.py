@@ -58,7 +58,7 @@ def layout():
             dcc.Dropdown(
                 id="locked-indices",
                 multi=True,
-                placeholder="Select locked indices",
+                placeholder="Select locked indices"
             ),
         ], style={'width': '100%', 'padding': '0px 20px 20px 20px', 'boxSizing': 'border-box', 'display': 'inline-block'}),
         
