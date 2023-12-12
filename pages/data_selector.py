@@ -65,7 +65,9 @@ def layout():
     ])
 
 
-def get_city_name(bfs_num, path='matrix-optimizer/data/cities/00_bfs_numbers.json'):
+def get_city_name(bfs_num):
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path += '/data/cities/'
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
