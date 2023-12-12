@@ -7,6 +7,7 @@ import os
 import dash
 import dash_uploader as du
 import uuid
+from helpers import helpers
 
 def get_upload_component(id):
     return du.Upload(
@@ -96,5 +97,5 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
     params_file_path = os.path.join(path, f'{city_name}_parameters.json')
     with open(params_file_path, 'w') as json_file:
         json.dump(selected_parameters, json_file)
-
+    helpers.get_cities()
     return f'Saved {city_name}.npy and {city_name}_parameters.json'
