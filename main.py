@@ -32,4 +32,5 @@ def render_page_content(pathname):
         
 server = app.server
 if __name__ == '__main__':
-    app.run()
+    from waitress import serve
+    serve(app)
