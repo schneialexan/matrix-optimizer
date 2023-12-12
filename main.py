@@ -29,6 +29,7 @@ def render_page_content(pathname):
         return data_selector.layout()
     if pathname == "/optimizer":
         return matrix_optimizer.layout()
-
+        
+server = app.server
 if __name__ == '__main__':
-    app.run_server()
+    app.run()
