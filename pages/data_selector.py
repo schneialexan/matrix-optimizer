@@ -85,7 +85,9 @@ def get_city_name(bfs_num):
     prevent_initial_call=True
 )
 def update_data_and_dropdowns(contents):
+    print('Successfully received callback')
     content_type, content_string = contents.split(',')
+    print('Sucessfully split')
     decoded = io.StringIO(base64.b64decode(content_string).decode('utf-8'))
     df = pd.read_csv(decoded)
     print('Successful decode')
