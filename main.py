@@ -26,10 +26,8 @@ app.layout = html.Div([
 )
 def render_page_content(pathname):
     if pathname == "/":
-        print('Selector')
         return data_selector.layout()
     if pathname == "/optimizer":
-        print('Optimizer')
         return matrix_optimizer.layout()
         
 server = app.server
