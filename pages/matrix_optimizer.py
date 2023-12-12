@@ -101,6 +101,7 @@ def layout():
      State('stadt-dropdown', 'value')]
 )
 def save_matrix(n_clicks, matrix_data, matrix_columns, stadt):
+    print('Save')
     if n_clicks is None:
         return dash.no_update
     df = pd.DataFrame(matrix_data)
