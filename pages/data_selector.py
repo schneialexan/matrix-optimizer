@@ -66,6 +66,7 @@ def layout():
 
 
 def get_city_name(bfs_num):
+    print(f'BFS_Nummer: {bfs_num}')
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
@@ -87,15 +88,17 @@ def update_data_and_dropdowns(contents):
     content_type, content_string = contents.split(',')
     decoded = io.StringIO(base64.b64decode(content_string).decode('utf-8'))
     df = pd.read_csv(decoded)
-    
+    print('Successful decode')
     # Save DataFrame to Parquet file
     temp_dir = tempfile.mkdtemp()
     file_path = os.path.join(temp_dir, 'data.parquet')
     df.to_parquet(file_path, index=False)
-
+    print('Successful save')
+    
     # Update city dropdown options
     cities = df['bfs_nummer'].unique()
     city_options = [{'label': get_city_name(str(city)), 'value': str(city)} for city in cities]
+    print('Successful options')
 
     # Update parameter dropdown options
     available_params = df.columns.difference(['d', 'year', 'geom', 'bfs_nummer']).tolist()
