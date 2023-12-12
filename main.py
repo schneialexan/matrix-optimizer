@@ -8,6 +8,7 @@ import pandas as pd
 import json
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+server = app.server
 tmp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tmp')
 du.configure_upload(app, tmp_path)
 
@@ -70,7 +71,6 @@ def callback_on_completion(file_paths):
     else:
         return [], [], None
         
-server = app.server
 if __name__ == '__main__':
     from waitress import serve
     serve(server, host='0.0.0.0', port=8080, threads=100)
