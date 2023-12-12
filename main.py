@@ -26,11 +26,13 @@ app.layout = html.Div([
 )
 def render_page_content(pathname):
     if pathname == "/":
+        print('Selector')
         return data_selector.layout()
     if pathname == "/optimizer":
+        print('Optimizer')
         return matrix_optimizer.layout()
         
 server = app.server
 if __name__ == '__main__':
     from waitress import serve
-    serve(app.server, host='0.0.0.0', port=8080)
+    serve(server, host='0.0.0.0', port=8080)
