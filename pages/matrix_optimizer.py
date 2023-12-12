@@ -163,7 +163,9 @@ def update_matrix(reset_clicks, optimize_clicks, stadt, max_change, locked_indic
     ctx_triggered = ctx.triggered_id
 
     # get necessary data
-    matrices = np.load(f'matrix-optimizer/data/cities/{stadt}.npy', allow_pickle=True)
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path += '/data/cities/'
+    matrices = np.load(f'{path}{stadt}.npy', allow_pickle=True)
     matrix_size = matrices[0].shape[1]
 
     print(f'Called with {ctx.triggered}')
