@@ -65,16 +65,6 @@ def get_city_name(bfs_num):
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
-
-def get_dirs():
-    cities = []
-    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(path, 'data')
-    path = os.path.join(path, 'cities')
-    for file in os.listdir(path):
-        if file.endswith(".json"):
-            cities.append(file.split('.')[0].capitalize())
-    return cities
     
 # Callback to save selected parameters as .npy file
 @dash.callback(
@@ -100,10 +90,11 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(path, 'data')
     path = os.path.join(path, 'cities')
-    np.save(path + r'\\' + city_name + '.npy', matrices)
+    matrices_file_path = os.path.join(path, f'{city_name}_matrices.npy')
+    np.save(matrices_file_path, np.array(matrices))
     
     # save parameters
     params_file_path = os.path.join(path, f'{city_name}_parameters.json')
     with open(params_file_path, 'w') as json_file:
         json.dump(selected_parameters, json_file)
-    return f'Saved {city_name}.npy and {city_name}_parameters.json, files: {get_dirs()}'
+    return f'Saved {city_name}.npy and {city_name}_parameters.json, files: {helpers.get_cities()}'
