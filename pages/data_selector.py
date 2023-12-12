@@ -65,7 +65,7 @@ def layout():
     ])
 
 
-def get_city_name(bfs_num, path='src/data/cities/00_bfs_numbers.json'):
+def get_city_name(bfs_num, path='matrix-optimizer/data/cities/00_bfs_numbers.json'):
     with open(path, 'r') as f:
         bfs_nummers = json.load(f)
     return bfs_nummers.get(str(bfs_num), f'{bfs_num} not found')
@@ -119,7 +119,7 @@ def save_parameters(n_clicks, city_value, selected_parameters, file_path):
     city_name = get_city_name(city_value).lower()
 
     # save matrices
-    save_path = 'src/data/cities/'
+    save_path = 'matrix-optimizer/data/cities/'
     np.save(save_path + city_name + '.npy', matrices)
     
     # save parameters
