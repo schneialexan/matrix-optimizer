@@ -103,13 +103,16 @@ def get_best_learn_rate(matrix_to_optimize, matrices, start_lr=1e-10, end_lr=1e2
 # get all available cities from data folder
 def get_cities():
     cities = []
-    for file in os.listdir('matrix-optimizer/data/cities'):
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path += '/data/cities/'
+    for file in os.listdir(path):
         if file.endswith(".npy"):
             cities.append(file.split('.')[0].capitalize())
     return cities
 
 def get_columns(city):
-    path = f'matrix-optimizer/data/cities/'
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path += '/data/cities/'
     file_name = f'{city}_parameters.json'
     with open(path + file_name) as f:
         data = json.load(f)
