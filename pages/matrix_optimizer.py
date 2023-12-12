@@ -8,19 +8,6 @@ import os
 import pandas as pd
 import os
 
-def get_download_path():
-    """Returns the default downloads path for linux or windows"""
-    if os.name == 'nt':
-        import winreg
-        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
-        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-            location = winreg.QueryValueEx(key, downloads_guid)[0]
-        return location
-    else:
-        return os.path.join(os.path.expanduser('~'), 'downloads')
-
-
 def layout():
     START_MATRIX_SIZE = 4
     return html.Div([
@@ -98,6 +85,7 @@ def layout():
         ], style={'width': '100%', 'padding': '0px 20px 20px 20px', 'boxSizing': 'border-box', 'display': 'inline-block'}),
         html.Div([
             html.Button("Save", id="save-button-matrix", style={'backgroundColor': '#00cc00', 'color': '#ffffff'}),
+            dcc.Download(id="download-matrix")
         ], style={'width': '100%', 'padding': '0px 20px 20px 20px', 'boxSizing': 'border-box', 'display': 'inline-block'}),
         html.Div(id='save-button-matrix-output'),
     ])
@@ -105,7 +93,8 @@ def layout():
 
 # New callback for saving the matrix
 @dash.callback(
-    Output('save-button-matrix-output', 'children'),
+    [Output('save-button-matrix-output', 'children'),
+     Output("download-matrix", "data")],
     [Input('save-button-matrix', 'n_clicks')],
     [State('matrix', 'data'),
      State('matrix', 'columns'),
@@ -116,15 +105,10 @@ def save_matrix(n_clicks, matrix_data, matrix_columns, stadt):
         return dash.no_update
     df = pd.DataFrame(matrix_data)
     df.columns = [column['name'] for column in matrix_columns]
-    save_folder = get_download_path()
+    
+    filename = f'{stadt}_matrix_{n_clicks}.csv'
 
-    if not os.path.exists(save_folder):
-        os.makedirs(save_folder)
-
-    save_path = os.path.join(save_folder, f'{stadt}_matrix_{n_clicks}.csv')
-    df.to_csv(save_path, index=False)
-
-    return f'Saved matrix as {save_path}'
+    return f'Saved matrix as {filename}', dict(content=df.to_csv(index=False), filename=filename)
 
 
 def optimize_matrix(matrix, matrices, locked_indices, max_change, optimization_method):
