@@ -31,4 +31,4 @@ def render_page_content(pathname):
         return matrix_optimizer.layout()
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
