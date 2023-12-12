@@ -109,6 +109,7 @@ def get_cities():
     for file in os.listdir(path):
         if file.endswith(".npy"):
             cities.append(file.split('.')[0].capitalize())
+    print(cities)
     return cities
 
 def get_columns(city):
